@@ -10,6 +10,7 @@ public class DraggableWindowBorder : MonoBehaviour, IPointerDownHandler, IPointe
     {
         pointerDown = true;
         offset = transform.parent.position - Input.mousePosition;
+        transform.parent.SetAsLastSibling();
     }
 
     public void OnPointerUp(PointerEventData eventData)

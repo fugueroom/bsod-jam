@@ -3,7 +3,7 @@ using UnityEngine;
 public class PopupSpawnerButton : DoubleClickButton
 {
     [SerializeField]
-    private RectTransform PopupPrefab;
+    protected RectTransform PopupPrefab;
 
     [SerializeField]
     private Canvas RootCanvas;
@@ -18,7 +18,7 @@ public class PopupSpawnerButton : DoubleClickButton
         OnDoubleClick -= OnSpawnerButtonSelected;
     }
 
-    private void OnSpawnerButtonSelected()
+    protected virtual void OnSpawnerButtonSelected()
     {
         RectTransform popup = Instantiate<RectTransform>(PopupPrefab, RootCanvas.transform);
         Vector3 newPos = popup.anchoredPosition;

@@ -1,13 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DiaryPopupWindow : MonoBehaviour
+public class DiaryPopupWindow : QuittableWindow
 {
-    [SerializeField]
-    private Button _quitButton;
 
-    private void Start()
-    {
-        _quitButton.onClick.AddListener(() => Destroy(gameObject));
-    }
 }

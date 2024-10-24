@@ -341,6 +341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e15e7006a738c443b1509105cb160b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ParentIsRoot: 1
 --- !u!1 &4997820677148715593
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,7 +484,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: hey bitch!
+  m_text: hey friend!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -856,6 +857,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _quitButton: {fileID: 3236447936902563297}
+  diaryInputField: {fileID: 120119662412264023}
 --- !u!1 &9039179756393948733
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,8 @@
 using UnityEngine;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.CompilerServices;
+using System.Threading;
 
 public class ChummyManager : MonoBehaviour
 {
@@ -15,6 +17,15 @@ public class ChummyManager : MonoBehaviour
     public static ChummyManager Instance;
     public bool IsSpawned { get; private set; }
 
+    private CancellationTokenSource chummyTalkCT;
+
+    public enum TrashAlertLevel
+    {
+        Low,
+        Medium,
+        High
+    }
+
     private void Awake()
     {
         if (Instance != null)
@@ -24,6 +35,46 @@ public class ChummyManager : MonoBehaviour
 
         Instance = this;
     }
+
+    private void OnEnable()
+    {
+        chummyTalkCT = new CancellationTokenSource();
+    }
+
+    bool working = false;
+
+    private void OnDisable()
+    {
+        chummyTalkCT.Dispose();
+    }
+    /*
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+
+            chummyTalkCT?.Cancel();
+            chummyTalkCT = new CancellationTokenSource();
+
+            Work(chummyTalkCT.Token).Forget();
+        }
+    }
+
+    private async UniTaskVoid Work(CancellationToken ct)
+    {
+        working = true;
+        Debug.Log("Starting...");
+        await UniTask.Delay(2000, cancellationToken: ct);
+        ct.ThrowIfCancellationRequested();
+
+        Debug.Log("Working...");
+        await UniTask.Delay(2000, cancellationToken: ct);
+        ct.ThrowIfCancellationRequested();
+
+        Debug.Log("Done!");
+        working = false;
+    }
+    */
 
     public void SpawnChummy()
     {
@@ -42,12 +93,51 @@ public class ChummyManager : MonoBehaviour
         });
     }
 
-    public async UniTaskVoid ChummyIntro()
+    bool trashAlertedLevel1, trashAlertedLevel2, trashAlertedLevel3;
+
+    public void ChummyTrashAlert(TrashAlertLevel level)
     {
-        await chummyInstance.Talk("heh heh");
-        await chummyInstance.Talk("hey...");
-        await chummyInstance.Talk("..." + GameflowManager.Instance.PlayerName);
-        await chummyInstance.Talk("names CHUMMY");
-        await chummyInstance.Talk("need something?");
+        if (IsSpawned)
+        {
+            if (level == TrashAlertLevel.Low && !trashAlertedLevel1)
+            {
+                trashAlertedLevel1 = true;
+                ChummySingleTalk("what are you doing?!").Forget();
+            }
+            else if (level == TrashAlertLevel.Medium && !trashAlertedLevel2)
+            {
+                trashAlertedLevel2 = true;
+                ChummySingleTalk("get away from there!!!!").Forget();
+            }
+            else if (level == TrashAlertLevel.High && !trashAlertedLevel3)
+            {
+                trashAlertedLevel3 = true;
+                ChummySingleTalk("AGHGHAHGHGGHHGH").Forget();
+            }
+        }
+    }
+
+    private async UniTaskVoid ChummySingleTalk(string text)
+    {
+        chummyTalkCT.Cancel();
+        chummyTalkCT = new CancellationTokenSource();
+
+        await chummyInstance.Talk(text, chummyTalkCT.Token);
+    }
+
+    private async UniTaskVoid ChummyIntro()
+    {
+        string playerName = "friend";
+
+        if (GameflowManager.Instance != null)
+        {
+            playerName = GameflowManager.Instance.PlayerName;
+        }
+
+        await chummyInstance.Talk("heh heh", chummyTalkCT.Token);
+        await chummyInstance.Talk("hey...", chummyTalkCT.Token);
+        await chummyInstance.Talk("..." + playerName, chummyTalkCT.Token);
+        await chummyInstance.Talk("names CHUMMY", chummyTalkCT.Token);
+        await chummyInstance.Talk("need something?", chummyTalkCT.Token);
     }
 }

@@ -1,6 +1,6 @@
-using System.Threading.Tasks;
 using UnityEngine;
 using TMPro;
+using Cysharp.Threading.Tasks;
 
 public class Chummy : MonoBehaviour
 {
@@ -22,7 +22,7 @@ public class Chummy : MonoBehaviour
     [SerializeField]
     private TextMeshPro speechText;
 
-    public async Task Talk(string text)
+    public async UniTask Talk(string text)
     {
         speechText.text = string.Empty;
         speechBubble.SetActive(true);
@@ -30,12 +30,12 @@ public class Chummy : MonoBehaviour
         for (int i = 0; i < text.Length; i++)
         {
             speechText.text += text[i];
-            await Task.Delay(talkDelay);
+            await UniTask.Delay(talkDelay);
 
             chummyMouth.sprite = i % 2 == 0 ? mouthOpenSprite : mouthCloseSprite;
         }
 
-        await Task.Delay(1000);
+        await UniTask.Delay(1000);
 
         speechText.text = string.Empty;
         speechBubble.SetActive(false);

@@ -1,6 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 public class ChummyManager : MonoBehaviour
 {
@@ -37,12 +37,12 @@ public class ChummyManager : MonoBehaviour
             chummyInstance.transform.DORotate(Vector3.zero, 3f).OnComplete(() =>
             {
                 // chummy talketh
-                ChummyIntro();
+                ChummyIntro().Forget();
             });
         });
     }
 
-    public async void ChummyIntro()
+    public async UniTaskVoid ChummyIntro()
     {
         await chummyInstance.Talk("heh heh");
         await chummyInstance.Talk("hey...");

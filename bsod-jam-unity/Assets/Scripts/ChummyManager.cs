@@ -46,6 +46,7 @@ public class ChummyManager : MonoBehaviour
     {
         await chummyInstance.Talk("heh heh");
         await chummyInstance.Talk("hey...");
+        await chummyInstance.Talk("..." + GameflowManager.Instance.PlayerName);
         await chummyInstance.Talk("names CHUMMY");
         await chummyInstance.Talk("need something?");
     }

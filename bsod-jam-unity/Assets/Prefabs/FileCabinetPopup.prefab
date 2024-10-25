@@ -59,7 +59,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -449,7 +449,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -586,6 +586,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8176300496877772267}
     m_Modifications:
+    - target: {fileID: 598805797638183665, guid: 0bdee8e09b77cc341af200b6f96f51a1, type: 3}
+      propertyPath: EntryText
+      value: whatever you do, dont trust chummy\nDELETE HIM... just drag his icon
+        to the trash\nits for the best, dont listen to anything he says
+      objectReference: {fileID: 0}
     - target: {fileID: 6491534967626537799, guid: 0bdee8e09b77cc341af200b6f96f51a1, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -690,7 +695,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 598805797638183665, guid: 0bdee8e09b77cc341af200b6f96f51a1, type: 3}
       propertyPath: EntryText
-      value: eggs\nmilk\nbread
+      value: eggs\nmilk\nbread\ndr perky\n10 gallons of brisk\nuhh napkins\n
       objectReference: {fileID: 0}
     - target: {fileID: 598805797638183665, guid: 0bdee8e09b77cc341af200b6f96f51a1, type: 3}
       propertyPath: EntryTitle

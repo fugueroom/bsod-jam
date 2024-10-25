@@ -21,7 +21,7 @@ public class ChummySpawnerButton : PopupSpawnerButton, IPointerDownHandler, IPoi
     {
         isSelected = false;
 
-        if (currentTrashDistance < 75f)
+        if (currentTrashDistance < 120f)
         {
             // set icon image
             TrashcanIcon.SetTrashFull();
@@ -57,11 +57,11 @@ public class ChummySpawnerButton : PopupSpawnerButton, IPointerDownHandler, IPoi
         // check distance from trash icon
         currentTrashDistance = (TrashcanIcon.transform.position - transform.position).magnitude;
 
-        if (currentTrashDistance < 1200f && currentTrashDistance > 600f)
+        if (currentTrashDistance < 1500f && currentTrashDistance > 900f)
         {
             ChummyManager.Instance.ChummyTrashAlert(ChummyManager.TrashAlertLevel.Low);
         }
-        else if (currentTrashDistance > 300f && currentTrashDistance < 600f)
+        else if (currentTrashDistance > 300f && currentTrashDistance < 900f)
         {
             ChummyManager.Instance.ChummyTrashAlert(ChummyManager.TrashAlertLevel.Medium);
         }

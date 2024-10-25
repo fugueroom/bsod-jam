@@ -8,6 +8,8 @@ public class GameflowManager : MonoBehaviour
     [SerializeField]
     private TMP_InputField currentUserInputField;
 
+    public UIDraggable CurrentDraggable;
+
     public string PlayerName { get; private set; }
 
     public static GameflowManager Instance;

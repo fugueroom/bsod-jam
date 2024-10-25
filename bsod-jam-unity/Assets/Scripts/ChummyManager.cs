@@ -140,4 +140,9 @@ public class ChummyManager : MonoBehaviour
         await chummyInstance.Talk("names CHUMMY", chummyTalkCT.Token);
         await chummyInstance.Talk("need something?", chummyTalkCT.Token);
     }
+
+    public void TrashChummy()
+    {
+        chummyInstance.transform.DOShakePosition(3f, 1f);
+    }
 }

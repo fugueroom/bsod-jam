@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using DG.Tweening;
 
 public class Chummy : MonoBehaviour
 {

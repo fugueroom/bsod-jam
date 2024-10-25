@@ -1,14 +1,38 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class ChummySpawnerButton : PopupSpawnerButton
+public class ChummySpawnerButton : PopupSpawnerButton, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField]
     private RectTransform AlertPopup;
 
     [SerializeField]
-    private GameObject TrashIcon;
+    private Trashcan TrashcanIcon;
 
     private float currentTrashDistance;
+    private bool isSelected;
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        isSelected = true;
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        isSelected = false;
+
+        if (currentTrashDistance < 75f)
+        {
+            // set icon image
+            TrashcanIcon.SetTrashFull();
+
+            // trash chummy
+            ChummyManager.Instance.TrashChummy();
+
+            // trash chummy button
+            Destroy(gameObject);
+        }
+    }
 
     protected override void OnSpawnerButtonSelected()
     {
@@ -22,18 +46,26 @@ public class ChummySpawnerButton : PopupSpawnerButton
 
     private void Update()
     {
-        // check distance from trash icon
-        currentTrashDistance = (TrashIcon.transform.position - transform.position).magnitude;
+        if (isSelected)
+        {
+            CheckTrashDistance();
+        }
+    }
 
-        if (currentTrashDistance < 1000f && currentTrashDistance > 500f)
+    private void CheckTrashDistance()
+    {
+        // check distance from trash icon
+        currentTrashDistance = (TrashcanIcon.transform.position - transform.position).magnitude;
+
+        if (currentTrashDistance < 1200f && currentTrashDistance > 600f)
         {
             ChummyManager.Instance.ChummyTrashAlert(ChummyManager.TrashAlertLevel.Low);
         }
-        else if (currentTrashDistance > 250f && currentTrashDistance < 500f)
+        else if (currentTrashDistance > 300f && currentTrashDistance < 600f)
         {
             ChummyManager.Instance.ChummyTrashAlert(ChummyManager.TrashAlertLevel.Medium);
         }
-        else if (currentTrashDistance < 250f)
+        else if (currentTrashDistance < 300f)
         {
             ChummyManager.Instance.ChummyTrashAlert(ChummyManager.TrashAlertLevel.High);
         }

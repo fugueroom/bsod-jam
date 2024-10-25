@@ -392,8 +392,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd743741f9bac6049a8df2452e0fe13f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GlobalVolume: {fileID: 388376415}
   ChummyPrefab: {fileID: 1124566147424325082, guid: 691f83d5e7341c84ba7065eb4883a9a0, type: 3}
   ChummySpawnPoint: {fileID: 1717739984}
+  ChummyNoResponsePrefab: {fileID: 3710680299328118919, guid: eeca656ad795a3c4d93e23bbec83f8be, type: 3}
+  RootCanvas: {fileID: 633085891}
 --- !u!1 &388376414
 GameObject:
   m_ObjectHideFlags: 0

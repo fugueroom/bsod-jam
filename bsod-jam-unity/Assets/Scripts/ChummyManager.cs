@@ -3,14 +3,25 @@ using DG.Tweening;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.CompilerServices;
 using System.Threading;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class ChummyManager : MonoBehaviour
 {
+    [SerializeField]
+    private Volume GlobalVolume;
+
     [SerializeField]
     private Chummy ChummyPrefab;
 
     [SerializeField]
     private Transform ChummySpawnPoint;
+
+    [SerializeField]
+    private RectTransform ChummyNoResponsePrefab;
+
+    [SerializeField]
+    private Canvas RootCanvas;
 
     private Chummy chummyInstance;
 
@@ -41,40 +52,18 @@ public class ChummyManager : MonoBehaviour
         chummyTalkCT = new CancellationTokenSource();
     }
 
-    bool working = false;
-
     private void OnDisable()
     {
         chummyTalkCT.Dispose();
     }
-    /*
+    
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-
-            chummyTalkCT?.Cancel();
-            chummyTalkCT = new CancellationTokenSource();
-
-            Work(chummyTalkCT.Token).Forget();
+            //TrashChummy();
         }
     }
-
-    private async UniTaskVoid Work(CancellationToken ct)
-    {
-        working = true;
-        Debug.Log("Starting...");
-        await UniTask.Delay(2000, cancellationToken: ct);
-        ct.ThrowIfCancellationRequested();
-
-        Debug.Log("Working...");
-        await UniTask.Delay(2000, cancellationToken: ct);
-        ct.ThrowIfCancellationRequested();
-
-        Debug.Log("Done!");
-        working = false;
-    }
-    */
 
     public void SpawnChummy()
     {
@@ -133,16 +122,56 @@ public class ChummyManager : MonoBehaviour
         {
             playerName = GameflowManager.Instance.PlayerName;
         }
-
+        
         await chummyInstance.Talk("heh heh", chummyTalkCT.Token);
         await chummyInstance.Talk("hey...", chummyTalkCT.Token);
         await chummyInstance.Talk("..." + playerName, chummyTalkCT.Token);
         await chummyInstance.Talk("names CHUMMY", chummyTalkCT.Token);
-        await chummyInstance.Talk("need something?", chummyTalkCT.Token);
+        await chummyInstance.Talk("need something?", chummyTalkCT.Token);        
     }
 
     public void TrashChummy()
     {
-        chummyInstance.transform.DOShakePosition(3f, 1f);
+        chummyInstance.transform.DOScaleX(8f, 30f);
+        chummyInstance.transform.DOScaleY(0.3f, 30f);
+
+        AdjustBloomOnChummyTrashed().Forget();
+        SpawnNoResponsePopup().Forget();
+    }
+
+    private async UniTask AdjustBloomOnChummyTrashed()
+    {
+        if (GlobalVolume.profile.TryGet<ColorAdjustments>(out var colorAdjustments))
+        {
+            colorAdjustments.colorFilter.value = Color.red;
+        }
+
+        if (GlobalVolume.profile.TryGet<Bloom>(out var bloom))
+        {
+            if (GlobalVolume.profile.TryGet<LensDistortion>(out var lensDistortion))
+            {
+                float maxBloom = 20f;
+
+                while (bloom.intensity.value < maxBloom)
+                {
+                    bloom.intensity.value += Time.deltaTime;
+                    lensDistortion.intensity.value -= Time.deltaTime;
+                    await UniTask.Delay(1);
+                }
+            }
+        }
+    }
+
+    private async UniTask SpawnNoResponsePopup()
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            RectTransform popup = Instantiate<RectTransform>(ChummyNoResponsePrefab, RootCanvas.transform);
+            Vector3 newPos = popup.anchoredPosition;
+            newPos.x += (i * 5) - 250f;
+            newPos.y += (i * 5) - 250f;
+            popup.anchoredPosition = newPos;
+            await UniTask.Delay(50);
+        }
     }
 }

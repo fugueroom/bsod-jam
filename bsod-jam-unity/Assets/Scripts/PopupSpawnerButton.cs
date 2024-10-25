@@ -5,25 +5,26 @@ public class PopupSpawnerButton : DoubleClickButton
     [SerializeField]
     protected RectTransform PopupPrefab;
 
-    [SerializeField]
-    private Canvas RootCanvas;
+    private Canvas rootCanvas;
+    protected RectTransform popupInstance;
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
+        rootCanvas = GetComponentInParent<Canvas>().rootCanvas;
         OnDoubleClick += OnSpawnerButtonSelected;
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         OnDoubleClick -= OnSpawnerButtonSelected;
     }
 
     protected virtual void OnSpawnerButtonSelected()
     {
-        RectTransform popup = Instantiate<RectTransform>(PopupPrefab, RootCanvas.transform);
-        Vector3 newPos = popup.anchoredPosition;
+        popupInstance = Instantiate<RectTransform>(PopupPrefab, rootCanvas.transform);
+        Vector3 newPos = popupInstance.anchoredPosition;
         newPos.x += Random.Range(-100f, 100f);
         newPos.y += Random.Range(-100f, 100f);
-        popup.anchoredPosition = newPos;
+        popupInstance.anchoredPosition = newPos;
     }
 }

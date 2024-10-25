@@ -23,6 +23,9 @@ public class ChummyManager : MonoBehaviour
     [SerializeField]
     private Canvas RootCanvas;
 
+    [SerializeField]
+    private GameObject BSOD;
+
     private Chummy chummyInstance;
 
     public static ChummyManager Instance;
@@ -172,6 +175,18 @@ public class ChummyManager : MonoBehaviour
             newPos.y += (i * 5) - 250f;
             popup.anchoredPosition = newPos;
             await UniTask.Delay(50);
+        }
+
+        await UniTask.Delay(200);
+
+        BSOD.transform.SetAsLastSibling();
+        BSOD.SetActive(true);
+
+        while (!Input.anyKeyDown) { await UniTask.Delay(1); }
+
+        if (GameflowManager.Instance != null)
+        {
+            GameflowManager.Instance.LoadChummyStartScreen();
         }
     }
 }

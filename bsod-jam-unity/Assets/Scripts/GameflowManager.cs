@@ -8,8 +8,6 @@ public class GameflowManager : MonoBehaviour
     [SerializeField]
     private TMP_InputField currentUserInputField;
 
-    public UIDraggable CurrentDraggable;
-
     public string PlayerName { get; private set; }
 
     public static GameflowManager Instance;
@@ -34,12 +32,21 @@ public class GameflowManager : MonoBehaviour
             PlayerName = "friend";
         }
 
-        LoadMainScene().Forget();
+        LoadScene(1).Forget();
     }
 
-    public async UniTaskVoid LoadMainScene()
+    public void LoadChummyStartScreen()
     {
-        await SceneManager.LoadSceneAsync(1, LoadSceneMode.Single);
+        LoadScene(2).Forget();
     }
 
+    public void LoadCorruptedOS()
+    {
+        LoadScene(3).Forget();
+    }
+
+    public async UniTaskVoid LoadScene(int scene)
+    {
+        await SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
+    }
 }

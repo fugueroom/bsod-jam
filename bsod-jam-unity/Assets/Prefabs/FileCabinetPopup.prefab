@@ -390,6 +390,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _quitButton: {fileID: 4594819851439737145}
+  quitAudio: {fileID: 8300000, guid: 551e94cca80cb284fa7cf133565e9bea, type: 3}
 --- !u!1 &7958945940963790266
 GameObject:
   m_ObjectHideFlags: 0

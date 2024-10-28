@@ -134,11 +134,32 @@ public class ChummyManager : MonoBehaviour
 
     public void TrashChummy()
     {
+        PitchDownAllAudio();
+
         chummyInstance.transform.DOScaleX(8f, 30f);
         chummyInstance.transform.DOScaleY(0.3f, 30f);
 
         AdjustBloomOnChummyTrashed().Forget();
         SpawnNoResponsePopup().Forget();
+    }
+
+    private void PitchDownAllAudio()
+    {
+        var audioSources = FindObjectsByType<AudioSource>(FindObjectsSortMode.None);
+
+        foreach (AudioSource audioSource in audioSources)
+        {
+            PitchDown(audioSource).Forget();
+        }
+    }
+
+    private async UniTaskVoid PitchDown(AudioSource source)
+    {
+        while (source.pitch > 0)
+        {
+            source.pitch -= Time.deltaTime;
+            await UniTask.Delay(50);
+        }
     }
 
     private async UniTask AdjustBloomOnChummyTrashed()

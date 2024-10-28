@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -45,14 +46,14 @@ public class BoomBox : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
 
-        SetCurrentSong();
-
         VolumeSlider.value = audioSource.volume;
 
         PlayPauseButton.onClick.AddListener(TogglePlayPause);
         NextSongButton.onClick.AddListener(PlayNextSong);
         PrevSongButton.onClick.AddListener(PlayPrevSong);
         VolumeSlider.onValueChanged.AddListener(SetVolume);
+
+        SetCurrentSong().Forget();
     }
 
     private void PlayNextSong()
@@ -62,7 +63,7 @@ public class BoomBox : MonoBehaviour
         // loop back to beginning if at end of songs
         if (currentSongIndex >= Songs.Count) { currentSongIndex = 0; }
 
-        SetCurrentSong();
+        SetCurrentSong().Forget();
     }
 
     private void PlayPrevSong()
@@ -72,15 +73,11 @@ public class BoomBox : MonoBehaviour
         // loop to end if at beginning
         if (currentSongIndex < 0) { currentSongIndex = Songs.Count - 1; }
 
-        SetCurrentSong();
+        SetCurrentSong().Forget();
     }
 
-    private void SetCurrentSong()
+    private async UniTaskVoid SetCurrentSong()
     {
-        audioSource.resource = Songs[currentSongIndex].SongClip;
-        audioSource.Play();
-
-        isPlaying = true;
         PlayPauseButton.image.sprite = PauseSprite;
 
         CurrentSongTitle.text = Songs[currentSongIndex].SongTitle;
@@ -90,6 +87,13 @@ public class BoomBox : MonoBehaviour
         CurrentArtistTitle.fontMaterial = Songs[currentSongIndex].ArtistTitleFontVariant;
 
         CurrentSongBackgroundImage.color = Songs[currentSongIndex].SongBackgroundColor;
+
+        audioSource.resource = Songs[currentSongIndex].SongClip;
+
+        await UniTask.Delay(100);
+
+        audioSource.Play();
+        isPlaying = true;
     }
 
     private void SetVolume(float volume)

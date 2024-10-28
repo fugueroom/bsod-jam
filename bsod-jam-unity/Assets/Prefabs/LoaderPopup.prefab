@@ -714,6 +714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _quitButton: {fileID: 4594819851439737145}
+  quitAudio: {fileID: 8300000, guid: 551e94cca80cb284fa7cf133565e9bea, type: 3}
   loadingBar: {fileID: 1440317829117529555}
   loadingSpeed: 0.2
 --- !u!1 &7738476208204436301

@@ -857,6 +857,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _quitButton: {fileID: 3236447936902563297}
+  quitAudio: {fileID: 8300000, guid: 551e94cca80cb284fa7cf133565e9bea, type: 3}
   diaryInputField: {fileID: 120119662412264023}
   diaryEntryTitle: {fileID: 6287018349308263510}
 --- !u!1 &9039179756393948733

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e7ed614612e3145bc730eb1a6b3f0a, type: 3}
+  m_Name: Tiki
+  m_EditorClassIdentifier: 
+  SongTitle: Tiki Bar Mixer
+  ArtistTitle: Don the Beachcomber
+  SongClip: {fileID: 8300000, guid: dba1557e989684c448c798578e7aa822, type: 3}
+  SongBackgroundColor: {r: 1, g: 0.4784325, b: 0, a: 1}
+  SongTitleFontVariant: {fileID: 2100000, guid: c6ae187701a7b4042a376e1ed9947b7a, type: 2}
+  ArtistTitleFontVariant: {fileID: 2100000, guid: 315b8fd879006ef49a8950b1acbe6bb4, type: 2}

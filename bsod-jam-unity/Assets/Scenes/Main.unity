@@ -874,8 +874,8 @@ GameObject:
   - component: {fileID: 851722464}
   - component: {fileID: 851722463}
   - component: {fileID: 851722462}
-  - component: {fileID: 851722461}
   - component: {fileID: 851722465}
+  - component: {fileID: 851722466}
   m_Layer: 5
   m_Name: BoomboxIcon
   m_TagString: Untagged
@@ -902,18 +902,6 @@ RectTransform:
   m_AnchoredPosition: {x: 42, y: -190}
   m_SizeDelta: {x: 64, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &851722461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 851722459}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: caeaa58e65f12df48a5ef5f750e93865, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &851722462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1009,6 +997,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ParentIsRoot: 0
+--- !u!114 &851722466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 851722459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd20761813022e04f983b507ba06a72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PopupPrefab: {fileID: 8379119982351917560, guid: 2ebc32ced876dc648883861a7e2a7adb, type: 3}
 --- !u!1 &1097709245
 GameObject:
   m_ObjectHideFlags: 0

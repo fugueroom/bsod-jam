@@ -1,7 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.CompilerServices;
 using System.Threading;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;

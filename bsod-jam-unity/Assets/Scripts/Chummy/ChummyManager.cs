@@ -155,10 +155,10 @@ public class ChummyManager : MonoBehaviour
 
     private async UniTaskVoid PitchDown(AudioSource source)
     {
-        while (source.pitch > 0)
+        while (source.pitch > 0.1f)
         {
-            source.pitch -= Time.deltaTime;
-            await UniTask.Delay(50);
+            source.pitch -= 0.01f;
+            await UniTask.Delay(150);
         }
     }
 

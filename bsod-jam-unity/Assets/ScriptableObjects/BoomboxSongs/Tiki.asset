@@ -15,6 +15,6 @@ MonoBehaviour:
   SongTitle: Tiki Bar Mixer
   ArtistTitle: Don the Beachcomber
   SongClip: {fileID: 8300000, guid: dba1557e989684c448c798578e7aa822, type: 3}
-  SongBackgroundColor: {r: 1, g: 0.4784325, b: 0, a: 1}
-  SongTitleFontVariant: {fileID: 2100000, guid: c6ae187701a7b4042a376e1ed9947b7a, type: 2}
-  ArtistTitleFontVariant: {fileID: 2100000, guid: 315b8fd879006ef49a8950b1acbe6bb4, type: 2}
+  SongBackgroundColor: {r: 1, g: 0.73766315, b: 0, a: 1}
+  SongTitleFontVariant: {fileID: 2100000, guid: 57e5979ab9740434d8702fe8391b4374, type: 2}
+  ArtistTitleFontVariant: {fileID: 2100000, guid: c6ae187701a7b4042a376e1ed9947b7a, type: 2}

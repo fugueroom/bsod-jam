@@ -27,28 +27,74 @@ public class BoomBox : MonoBehaviour
     [SerializeField]
     private Button PlayPauseButton;
 
+    [SerializeField]
+    private Button NextSongButton;
+
+    [SerializeField]
+    private Button PrevSongButton;
+
+    [SerializeField]
+    private Slider VolumeSlider;
+
     AudioSource audioSource;
 
     private bool isPlaying;
+    private int currentSongIndex;
 
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        audioSource.resource = Songs[0].SongClip;
+
+        SetCurrentSong();
+
+        VolumeSlider.value = audioSource.volume;
+
+        PlayPauseButton.onClick.AddListener(TogglePlayPause);
+        NextSongButton.onClick.AddListener(PlayNextSong);
+        PrevSongButton.onClick.AddListener(PlayPrevSong);
+        VolumeSlider.onValueChanged.AddListener(SetVolume);
+    }
+
+    private void PlayNextSong()
+    {
+        currentSongIndex++;
+
+        // loop back to beginning if at end of songs
+        if (currentSongIndex >= Songs.Count) { currentSongIndex = 0; }
+
+        SetCurrentSong();
+    }
+
+    private void PlayPrevSong()
+    {
+        currentSongIndex--;
+
+        // loop to end if at beginning
+        if (currentSongIndex < 0) { currentSongIndex = Songs.Count - 1; }
+
+        SetCurrentSong();
+    }
+
+    private void SetCurrentSong()
+    {
+        audioSource.resource = Songs[currentSongIndex].SongClip;
         audioSource.Play();
 
         isPlaying = true;
         PlayPauseButton.image.sprite = PauseSprite;
 
-        CurrentSongTitle.text = Songs[0].SongTitle;
-        CurrentSongTitle.fontMaterial = Songs[0].SongTitleFontVariant;
+        CurrentSongTitle.text = Songs[currentSongIndex].SongTitle;
+        CurrentSongTitle.fontMaterial = Songs[currentSongIndex].SongTitleFontVariant;
 
-        CurrentArtistTitle.text = Songs[0].ArtistTitle;
-        CurrentArtistTitle.fontMaterial = Songs[0].ArtistTitleFontVariant;
+        CurrentArtistTitle.text = Songs[currentSongIndex].ArtistTitle;
+        CurrentArtistTitle.fontMaterial = Songs[currentSongIndex].ArtistTitleFontVariant;
 
-        CurrentSongBackgroundImage.color = Songs[0].SongBackgroundColor;
+        CurrentSongBackgroundImage.color = Songs[currentSongIndex].SongBackgroundColor;
+    }
 
-        PlayPauseButton.onClick.AddListener(TogglePlayPause);
+    private void SetVolume(float volume)
+    {
+        audioSource.volume = volume;
     }
 
     private void TogglePlayPause()

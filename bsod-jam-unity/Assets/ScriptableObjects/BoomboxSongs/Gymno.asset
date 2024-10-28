@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e7ed614612e3145bc730eb1a6b3f0a, type: 3}
+  m_Name: Gymno
+  m_EditorClassIdentifier: 
+  SongTitle: Valse Gymnopedie
+  ArtistTitle: Mr. Classico
+  SongClip: {fileID: 8300000, guid: 21a80bb64968927468e6c1fc420cbe33, type: 3}
+  SongBackgroundColor: {r: 0.66404533, g: 0.51896673, b: 0.8050314, a: 1}
+  SongTitleFontVariant: {fileID: 2100000, guid: 7dff18f8dfac4a248859f9adfdffec15, type: 2}
+  ArtistTitleFontVariant: {fileID: 2100000, guid: 13cc88ac65ad968499efb825dd1ae9cf, type: 2}

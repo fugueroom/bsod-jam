@@ -17,6 +17,8 @@ public class DiaryEntry : PopupSpawnerButton
         title.text = EntryTitle;
     }
 
+    private static readonly string[] chummyReactions = new string[] { "whats that..", "what r u reading?", "what does that say?", "can i see that?" }; 
+
     protected override void OnSpawnerButtonSelected()
     {
         base.OnSpawnerButtonSelected();
@@ -27,6 +29,8 @@ public class DiaryEntry : PopupSpawnerButton
 
             diaryPopup.SetDiaryText(EntryText);
             diaryPopup.SetDiaryTitle(EntryTitle);
+
+            ChummyManager.Instance.ChummyOneLiner(chummyReactions[Random.Range(0, chummyReactions.Length - 1)]);
         }
     }
 }

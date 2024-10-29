@@ -94,6 +94,16 @@ public class BoomBox : MonoBehaviour
 
         audioSource.Play();
         isPlaying = true;
+
+        // chummy loves boogie
+        if (currentSongIndex == 2)
+        {
+            ChummyManager.Instance.ChummyBoogie().Forget();
+        }
+        else if (currentSongIndex == 0)
+        {
+            ChummyManager.Instance.ChummyOneLiner("ahh.. human music");
+        }
     }
 
     private void SetVolume(float volume)

@@ -15,6 +15,16 @@ public class DiaryPopupWindow : QuittableWindow
         {
             diaryInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "hey " + GameflowManager.Instance.PlayerName + "!";
         }
+
+        diaryInputField.onValueChanged.AddListener(OnDiaryWrite);
+    }
+
+    private void OnDiaryWrite(string value)
+    {
+        if (value.Contains("chummy"))
+        {
+            ChummyManager.Instance.ChummyOneLiner("are u talking about me?");
+        }
     }
 
     public void SetDiaryTitle(string text)

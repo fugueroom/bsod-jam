@@ -29,6 +29,7 @@ public class ChummyManager : MonoBehaviour
 
     public static ChummyManager Instance;
     public bool IsSpawned { get; private set; }
+    bool trashAlertedLevel1, trashAlertedLevel2, trashAlertedLevel3;
 
     private CancellationTokenSource chummyTalkCT;
 
@@ -58,14 +59,6 @@ public class ChummyManager : MonoBehaviour
     {
         chummyTalkCT.Dispose();
     }
-    
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            //TrashChummy();
-        }
-    }
 
     public void SpawnChummy()
     {
@@ -83,8 +76,6 @@ public class ChummyManager : MonoBehaviour
             });
         });
     }
-
-    bool trashAlertedLevel1, trashAlertedLevel2, trashAlertedLevel3;
 
     public void ChummyTrashAlert(TrashAlertLevel level)
     {
@@ -105,6 +96,39 @@ public class ChummyManager : MonoBehaviour
                 trashAlertedLevel3 = true;
                 ChummySingleTalk("AGHGHAHGHGGHHGH").Forget();
             }
+        }
+    }
+
+    public async UniTaskVoid ChummyBoogie()
+    {
+        if (IsSpawned)
+        {
+            await chummyInstance.Talk("i love this song", chummyTalkCT.Token);
+            await chummyInstance.Talk("makes me wanna dance", chummyTalkCT.Token);
+
+            chummyInstance.transform.DOShakeRotation(15f, 10f, 10, 45, true);
+        }
+    }
+
+    private bool chummyClickClackReact;
+
+    public async UniTaskVoid ChummyClickClackReact()
+    {
+        if (IsSpawned && !chummyClickClackReact)
+        {
+            chummyClickClackReact = true;
+            await chummyInstance.Talk("heh heh", chummyTalkCT.Token);
+            await chummyInstance.Talk("get ready to type", chummyTalkCT.Token);
+            await chummyInstance.Talk("with your human fingers", chummyTalkCT.Token);
+            await chummyInstance.Talk("must be nice", chummyTalkCT.Token);
+        }
+    }
+
+    public void ChummyOneLiner(string text)
+    {
+        if (IsSpawned)
+        {
+            ChummySingleTalk(text).Forget();
         }
     }
 
@@ -134,13 +158,16 @@ public class ChummyManager : MonoBehaviour
 
     public void TrashChummy()
     {
-        PitchDownAllAudio();
+        if (IsSpawned)
+        {
+            PitchDownAllAudio();
 
-        chummyInstance.transform.DOScaleX(8f, 30f);
-        chummyInstance.transform.DOScaleY(0.3f, 30f);
+            chummyInstance.transform.DOScaleX(8f, 30f);
+            chummyInstance.transform.DOScaleY(0.3f, 30f);
 
-        AdjustBloomOnChummyTrashed().Forget();
-        SpawnNoResponsePopup().Forget();
+            AdjustBloomOnChummyTrashed().Forget();
+            SpawnNoResponsePopup().Forget();
+        }
     }
 
     private void PitchDownAllAudio()

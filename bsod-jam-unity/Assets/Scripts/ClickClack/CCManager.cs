@@ -1,6 +1,8 @@
+using System.Threading;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using TMPro;
+using UnityEngine.Audio;
 
 public class CCManager : MonoBehaviour
 {
@@ -16,9 +18,27 @@ public class CCManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI GameOverText;
 
+    [SerializeField]
+    private TextMeshProUGUI TitleText;
+
+    [SerializeField]
+    private TextMeshProUGUI ExplainerText;
+
+    [SerializeField]
+    private TextMeshProUGUI HighScoreText;
+
+    [SerializeField]
+    private TextMeshProUGUI AnyKeyToContinueText;
+
+    [SerializeField]
+    private AudioResource PointScoredSFX;
+
     private int currentScore;
     private float currentFallingSpeed = 50f;
+    private int currentTimeBetweenWords = 1000;
     private bool gameOver;
+    private bool gameStarted;
+    private int highScore;
 
     public static CCManager Instance;
 
@@ -40,18 +60,42 @@ public class CCManager : MonoBehaviour
         Instance = this;
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
-        ContinueCreatingWords().Forget();
+        ChummyManager.Instance.ChummyClickClackReact().Forget();
     }
 
-    private async UniTaskVoid ContinueCreatingWords()
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && !gameStarted)
+        {
+            StartGame();
+        }
+    }
+
+    private void StartGame()
+    {
+        TitleText.gameObject.SetActive(false);
+        ExplainerText.gameObject.SetActive(false);
+
+        GameOverText.gameObject.SetActive(false);
+        HighScoreText.gameObject.SetActive(false);
+        AnyKeyToContinueText.gameObject.SetActive(false);
+
+        gameStarted = true;
+        gameOver = false;
+
+        ContinueCreatingWords(gameObject.GetCancellationTokenOnDestroy()).Forget();
+    }
+
+    private async UniTask ContinueCreatingWords(CancellationToken ct)
     {
         while (!gameOver)
         {
             CreateFallingText(wordset[Random.Range(0, wordset.Length)]);
-            await UniTask.Delay(1000);
+
+            await UniTask.Delay(currentTimeBetweenWords);
+            ct.ThrowIfCancellationRequested();
         }
     }
 
@@ -64,7 +108,6 @@ public class CCManager : MonoBehaviour
     public void GameOver()
     {
         GameOverText.gameObject.SetActive(true);
-        gameOver = true;
 
         var texts = GetComponentsInChildren<CCText>();
 
@@ -72,6 +115,25 @@ public class CCManager : MonoBehaviour
         {
             Destroy(text.gameObject);
         }
+
+        HighScoreText.gameObject.SetActive(true);
+        AnyKeyToContinueText.gameObject.SetActive(true);
+
+        if (currentScore > highScore)
+        {
+            // set new high score text
+            HighScoreText.text = "new high score!!!: " + currentScore.ToString();
+            highScore = currentScore;
+        }
+        else
+        {
+            HighScoreText.text = "high score: " + highScore.ToString();
+        }
+
+        gameOver = true;
+        gameStarted = false;
+
+        ChummyManager.Instance.ChummyOneLiner("too bad...");
     }
 
     public void AddToScore()
@@ -79,21 +141,35 @@ public class CCManager : MonoBehaviour
         currentScore++;
         ScoreText.text = currentScore.ToString();
 
-        if (currentScore == 20)
+        // Adjust difficulty!
+        if (currentScore == 15)
         {
             currentFallingSpeed *= 1.5f;
+            ChummyManager.Instance.ChummyOneLiner("pretty good...");
         }
-        else if (currentScore == 50)
+        else if (currentScore == 40)
         {
             currentFallingSpeed *= 1.4f;
+            currentTimeBetweenWords = 800;
+            ChummyManager.Instance.ChummyOneLiner("gotta type faster..");
         }
-        else if (currentScore == 80)
+        else if (currentScore == 75)
         {
             currentFallingSpeed *= 1.3f;
+            ChummyManager.Instance.ChummyOneLiner("FASTER!!");
         }
-        else if (currentFallingSpeed == 100)
+        else if (currentScore == 100)
         {
             currentFallingSpeed *= 1.2f;
+            currentTimeBetweenWords = 500;
+            ChummyManager.Instance.ChummyOneLiner("more! more! more!");
         }
+        else if (currentScore == 125)
+        {
+            currentFallingSpeed *= 1.1f;
+            ChummyManager.Instance.ChummyOneLiner("such fast fingers!");
+        }
+
+        UIAudioSource.Instance.PlayClip(PointScoredSFX);
     }
 }

@@ -34,8 +34,8 @@ public class CCManager : MonoBehaviour
     private AudioResource PointScoredSFX;
 
     private int currentScore;
-    private float currentFallingSpeed = 50f;
-    private int currentTimeBetweenWords = 1000;
+    private float currentFallingSpeed;
+    private int currentTimeBetweenWords;
     private bool gameOver;
     private bool gameStarted;
     private int highScore;
@@ -84,6 +84,11 @@ public class CCManager : MonoBehaviour
 
         gameStarted = true;
         gameOver = false;
+        currentScore = 0;
+        currentFallingSpeed = 50;
+        currentTimeBetweenWords = 1000;
+
+        ScoreText.text = currentScore.ToString();
 
         ContinueCreatingWords(gameObject.GetCancellationTokenOnDestroy()).Forget();
     }

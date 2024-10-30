@@ -176,16 +176,18 @@ public class ChummyManager : MonoBehaviour
 
         foreach (AudioSource audioSource in audioSources)
         {
-            PitchDown(audioSource).Forget();
+            PitchDown(audioSource, gameObject.GetCancellationTokenOnDestroy()).Forget();
         }
     }
 
-    private async UniTaskVoid PitchDown(AudioSource source)
+    private async UniTask PitchDown(AudioSource source, CancellationToken ct)
     {
         while (source.pitch > 0.1f)
         {
             source.pitch -= 0.01f;
+
             await UniTask.Delay(150);
+            ct.ThrowIfCancellationRequested();
         }
     }
 

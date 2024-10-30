@@ -87,6 +87,7 @@ public class CCManager : MonoBehaviour
         currentScore = 0;
         currentFallingSpeed = 50;
         currentTimeBetweenWords = 1000;
+        highScore = GameflowManager.Instance.CurrentCCHighScore;
 
         ScoreText.text = currentScore.ToString();
 
@@ -129,6 +130,7 @@ public class CCManager : MonoBehaviour
             // set new high score text
             HighScoreText.text = "new high score!!!: " + currentScore.ToString();
             highScore = currentScore;
+            GameflowManager.Instance.CurrentCCHighScore = highScore;
         }
         else
         {

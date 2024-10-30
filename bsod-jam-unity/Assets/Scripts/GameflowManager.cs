@@ -1,14 +1,19 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Cysharp.Threading.Tasks;
 using TMPro;
+using DG.Tweening;
 
 public class GameflowManager : MonoBehaviour
 {
     [SerializeField]
-    private TMP_InputField currentUserInputField;
+    private Image Fader;
 
     public string PlayerName { get; private set; }
+
+    [HideInInspector]
+    public int CurrentCCHighScore;
 
     public static GameflowManager Instance;
 
@@ -25,7 +30,7 @@ public class GameflowManager : MonoBehaviour
 
     public void LoadOS()
     {
-        PlayerName = currentUserInputField.text;
+        PlayerName = FindAnyObjectByType<TMP_InputField>().text;
 
         if (string.IsNullOrEmpty(PlayerName))
         {
@@ -33,6 +38,12 @@ public class GameflowManager : MonoBehaviour
         }
 
         LoadScene(1).Forget();
+    }
+
+    public void LoadStartScreen()
+    {
+        PlayerName = string.Empty;
+        LoadScene(0).Forget();
     }
 
     public void LoadChummyStartScreen()
@@ -47,6 +58,19 @@ public class GameflowManager : MonoBehaviour
 
     public async UniTaskVoid LoadScene(int scene)
     {
+        var sources = FindObjectsByType<AudioSource>(FindObjectsSortMode.None);
+
+        foreach (var source in sources)
+        {
+            source.DOFade(0f, 1f);
+        }
+
+        Fader.gameObject.SetActive(true);
+        await Fader.DOFade(1f, 2f).AsyncWaitForCompletion();
+
         await SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
+
+        await Fader.DOFade(0f, 0.2f).AsyncWaitForCompletion();
+        Fader.gameObject.SetActive(false);
     }
 }

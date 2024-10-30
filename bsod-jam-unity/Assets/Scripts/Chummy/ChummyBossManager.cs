@@ -193,7 +193,14 @@ public class ChummyBossManager : MonoBehaviour
         ChummyBoss.transform.DOShakeScale(5f, 1f);
 
         await UniTask.Delay(3000);
+        ct.ThrowIfCancellationRequested();
+
         KSOD.SetActive(true);
+
+        await UniTask.Delay(5000);
+        ct.ThrowIfCancellationRequested();
+
+        GameflowManager.Instance.LoadStartScreen();
     }
 
     private void CleanupFallingText()
@@ -309,7 +316,7 @@ public class ChummyBossManager : MonoBehaviour
     {
         BFTypeableText text;
         string word;
-        float xThreshold = Screen.width / 2.2f;
+        float xThreshold = Screen.width / 2.5f;
         float textBottomThreshold = -Screen.height;
 
         while (!gameOver)

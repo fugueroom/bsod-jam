@@ -40,10 +40,10 @@ MonoBehaviour:
     m_Value: 0
   contrast:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 100
   colorFilter:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    m_Value: {r: 1, g: 0, b: 0.099969864, a: 1}
   hueShift:
     m_OverrideState: 1
     m_Value: 0
@@ -87,10 +87,10 @@ MonoBehaviour:
   active: 1
   temperature:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: -82
   tint:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 66
 --- !u!114 &-1805173624053408980
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -137,7 +137,7 @@ MonoBehaviour:
     m_Value: 0.9
   intensity:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 5
   scatter:
     m_OverrideState: 1
     m_Value: 0.7
@@ -193,7 +193,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: DefaultVolumeProfile
+  m_Name: CorruptedMain
   m_EditorClassIdentifier: 
   components:
   - {fileID: -907875194062688165}
@@ -384,7 +384,7 @@ MonoBehaviour:
   active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.112
 --- !u!114 &3368139796763852370
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -419,7 +419,7 @@ MonoBehaviour:
   active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.57
   xMultiplier:
     m_OverrideState: 1
     m_Value: 1
@@ -786,7 +786,7 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.353
   response:
     m_OverrideState: 1
     m_Value: 0.8

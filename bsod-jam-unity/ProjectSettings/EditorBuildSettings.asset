@@ -15,8 +15,8 @@ EditorBuildSettings:
     path: Assets/Scenes/ChummyStartScreen.unity
     guid: 01c0270fafc0d5441b6197b91dde9534
   - enabled: 1
-    path: Assets/Scenes/CorruptedOS.unity
-    guid: a6383fd8b053be94ab6fd2e6b8db9fe4
+    path: Assets/Scenes/CorruptedMain.unity
+    guid: 4fac984c473821d43ab263f1e4587c76
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

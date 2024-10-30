@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6509f5633799eb44aa6857b92c6d4b8, type: 3}
   m_Name: BossFight
   m_EditorClassIdentifier: 
-  StartingFallSpeed: 50
+  StartingFallSpeed: 60
   StartingTimeBetweenWords: 1000
   Wordset:
   - async

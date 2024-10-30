@@ -311,7 +311,7 @@ public class ChummyBossManager : MonoBehaviour
     {
         BFTypeableText text;
         string word;
-        float xThreshold = Screen.width * 0.4f;
+        float xThreshold = Screen.width * 0.33f;
         float textBottomThreshold = -Screen.height;
 
         while (!gameOver)

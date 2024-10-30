@@ -185,7 +185,7 @@ public class ChummyBossManager : MonoBehaviour
 
         bossFightStarted = true;
         
-        while (BossAudio.pitch < 1f)
+        while (BossAudio.pitch < 0.9f)
         {
             BossAudio.pitch += 0.01f;
 

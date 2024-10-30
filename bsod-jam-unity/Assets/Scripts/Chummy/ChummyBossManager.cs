@@ -1,7 +1,9 @@
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using TMPro;
 
 public class ChummyBossManager : MonoBehaviour
 {
@@ -17,9 +19,117 @@ public class ChummyBossManager : MonoBehaviour
     [SerializeField]
     private AudioSource BossAudio;
 
+    [SerializeField]
+    private Slider AttackBar;
+
+    [SerializeField]
+    private Slider ChummyHealthBar;
+
+    [SerializeField]
+    private Slider KernelStabilityBar;
+
+    [SerializeField]
+    private BFTypeableText BFTypeableTextPrefab;
+
+    [SerializeField]
+    private Canvas RootCanvas;
+
+    [SerializeField]
+    private FallingTextConfig BossFightConfig;
+
+    [SerializeField]
+    private TextMeshProUGUI AttackText;
+
+    [SerializeField]
+    private TextMeshProUGUI KernelStabilityText;
+
+    [SerializeField]
+    private TextMeshProUGUI ChummyHealthBarText;
+
+    [SerializeField]
+    private GameObject GSOV;
+
+    [SerializeField]
+    private GameObject KSOD;
+
+    public static ChummyBossManager Instance;
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(this);
+        }
+
+        Instance = this;
+    }
+
     private void Start()
     {
         ChummyIntroTalk(gameObject.GetCancellationTokenOnDestroy()).Forget();
+        AttackBar.onValueChanged.AddListener(OnAttackReady);
+    }
+
+    private bool bossFightStarted = false;
+
+    private void Update()
+    {
+        if (!gameOver && bossFightStarted)
+        {
+            if (attackReady && Input.GetKeyDown(KeyCode.Space))
+            {
+                // attack!
+                AttackChummy(gameObject.GetCancellationTokenOnDestroy()).Forget();
+            }
+
+            KernelStabilityBar.value -= Time.deltaTime * 0.013f;
+
+            if (KernelStabilityBar.value <= 0.001f)
+            {
+                // GAME OVER!
+                gameOver = true;
+                KSOD.SetActive(true);
+            }
+            
+            if (ChummyHealthBar.value <= 0.001f)
+            {
+                // WIN!
+                gameOver = true;
+                GSOV.SetActive(true);
+            }
+        }
+    }
+
+    private async UniTask AttackChummy(CancellationToken ct)
+    {
+        attackReady = false;
+        AttackText.gameObject.SetActive(false);
+
+        ChummyHealthBar.value -= 0.2f;
+
+        await ChummyBoss.Talk("ahhhH!!", ct);
+
+        AttackBar.value = 0;
+    }
+
+    private bool attackReady;
+
+    private void OnAttackReady(float value)
+    {
+        if (value == AttackBar.maxValue)
+        {
+            attackReady = true;
+            FlashAttackReadyText().Forget();
+        }
+    }
+
+    private async UniTaskVoid FlashAttackReadyText()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            AttackText.gameObject.SetActive(i % 2 == 0);
+            await UniTask.Delay(100);
+        }
     }
 
     private async UniTask ChummyIntroTalk(CancellationToken ct)
@@ -61,15 +171,58 @@ public class ChummyBossManager : MonoBehaviour
         await UniTask.Delay(1000);
         ct.ThrowIfCancellationRequested();
 
-        await ChummyBoss.transform.DOMoveX(0.5f, 2f).AsyncWaitForCompletion();
-        ChummyBoss.transform.DOMoveX(-0.5f, 2f).SetLoops(-1, LoopType.Yoyo);
+        await ChummyBoss.transform.DOMoveX(0.2f, 2f).AsyncWaitForCompletion();
+        ChummyBoss.transform.DOMoveX(-0.2f, 2f).SetLoops(-1, LoopType.Yoyo);
+        
+        //ChummyBoss.transform.DOMoveY(0f, 0f);
 
-        while (BossAudio.pitch < 1.5f)
+        AttackBar.gameObject.SetActive(true);
+        ChummyHealthBar.gameObject.SetActive(true);
+        KernelStabilityBar.gameObject.SetActive(true);
+
+        ChummyHealthBarText.gameObject.SetActive(true);
+        KernelStabilityText.gameObject.SetActive(true);
+
+        bossFightStarted = true;
+        
+        while (BossAudio.pitch < 1f)
         {
             BossAudio.pitch += 0.01f;
 
-            await UniTask.Delay(100);
+            await UniTask.Delay(10);
             ct.ThrowIfCancellationRequested();
+        }
+
+        BossLoop(ct).Forget();
+    }
+
+    private bool gameOver;
+    private float FallingTextStartingYPos = 300;
+
+    private async UniTask BossLoop(CancellationToken ct)
+    {
+        BFTypeableText text;
+        string word;
+        float xThreshold = Screen.width / 2.2f;
+        float textBottomThreshold = -Screen.height;
+
+        while (!gameOver)
+        {
+            text = Instantiate(BFTypeableTextPrefab, RootCanvas.transform);
+            word = BossFightConfig.Wordset[Random.Range(0, BossFightConfig.Wordset.Length)];
+
+            text.Initialize(new Vector3(Random.Range(-xThreshold, xThreshold), FallingTextStartingYPos, 0f), textBottomThreshold, word, BossFightConfig.StartingFallSpeed, "white");
+
+            await UniTask.Delay(BossFightConfig.StartingTimeBetweenWords);
+            ct.ThrowIfCancellationRequested();
+        }
+    }
+
+    public void AddToAttackBar()
+    {
+        if (AttackBar.value < 1f)
+        {
+            AttackBar.value += 0.1f;
         }
     }
 }

@@ -4,6 +4,7 @@ using DG.Tweening;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using TMPro;
+using UnityEngine.Audio;
 
 public class ChummyBossManager : MonoBehaviour
 {
@@ -52,6 +53,18 @@ public class ChummyBossManager : MonoBehaviour
     [SerializeField]
     private GameObject KSOD;
 
+    [SerializeField]
+    private ParticleSystem LoserPS;
+
+    [SerializeField]
+    private AudioResource WinSong;
+
+    [SerializeField]
+    private GameObject Credits1;
+
+    [SerializeField]
+    private GameObject Credits2;
+
     public static ChummyBossManager Instance;
 
     private void Awake()
@@ -87,16 +100,109 @@ public class ChummyBossManager : MonoBehaviour
             if (KernelStabilityBar.value <= 0.001f)
             {
                 // GAME OVER!
-                gameOver = true;
-                KSOD.SetActive(true);
+                LoseSequence(gameObject.GetCancellationTokenOnDestroy()).Forget();
             }
             
             if (ChummyHealthBar.value <= 0.001f)
             {
                 // WIN!
-                gameOver = true;
-                GSOV.SetActive(true);
+                WinSequence(gameObject.GetCancellationTokenOnDestroy()).Forget();
             }
+        }
+    }
+
+    private async UniTask WinSequence(CancellationToken ct)
+    {
+        gameOver = true;
+        Camera.main.transform.DOShakePosition(3f, 1f);
+
+        ChummyHealthBar.gameObject.SetActive(false);
+        ChummyHealthBarText.gameObject.SetActive(false);
+        AttackBar.gameObject.SetActive(false);
+        KernelStabilityBar.gameObject.SetActive(false);
+        KernelStabilityText.gameObject.SetActive(false);
+
+        CleanupFallingText();
+
+        BossAudio.DOFade(0f, 2f).OnComplete(() =>
+        {
+            BossAudio.resource = WinSong;
+            BossAudio.pitch = 1.25f;
+            BossAudio.Play();
+            BossAudio.DOFade(0.5f, 16f);
+        });
+
+        await ChummyBoss.Talk("ARHGHGH!!", ct);
+        await ChummyBoss.Talk("my beautiful code!!", ct);
+
+        ChummyBoss.transform.DOScale(0f, 5f);
+
+        await UniTask.Delay(6000);
+        ct.ThrowIfCancellationRequested();
+
+        GSOV.SetActive(true);
+
+        var text = GSOV.GetComponentInChildren<TextMeshProUGUI>();
+
+        string dots = "//";
+
+        for (int i = 0; i < 25; i++)
+        {
+            text.text += dots + "\n";
+            dots += ".";
+
+            await UniTask.Delay(120);
+            ct.ThrowIfCancellationRequested();
+        }
+
+        text.text += "\nCHUMMY.EXE has been uninstalled successfully.";
+
+        await UniTask.Delay(5000);
+        ct.ThrowIfCancellationRequested();
+
+        GSOV.gameObject.SetActive(false);
+        Credits1.gameObject.SetActive(true);
+
+        await UniTask.Delay(5000);
+        ct.ThrowIfCancellationRequested();
+
+        Credits1.gameObject.SetActive(false);
+        Credits2.gameObject.SetActive(true);
+    }
+
+    private async UniTask LoseSequence(CancellationToken ct)
+    {
+        gameOver = true;
+        Camera.main.transform.DOShakePosition(3f, 1f);
+
+        ChummyHealthBar.gameObject.SetActive(false);
+        ChummyHealthBarText.gameObject.SetActive(false);
+        AttackBar.gameObject.SetActive(false);
+        KernelStabilityBar.gameObject.SetActive(false);
+        KernelStabilityText.gameObject.SetActive(false);
+
+        CleanupFallingText();
+
+        LoserPS.gameObject.SetActive(true);
+
+        BossAudio.DOFade(0f, 12f);
+
+        await ChummyBoss.Talk("ha ha ha!!", ct);
+        await ChummyBoss.Talk("kernel belong to CHUMMY", ct);
+
+        ChummyBoss.transform.DOShakeScale(5f, 1f);
+
+        await UniTask.Delay(3000);
+        KSOD.SetActive(true);
+    }
+
+    private void CleanupFallingText()
+    {
+        var texts = RootCanvas.GetComponentsInChildren<BFTypeableText>();
+
+        foreach (var text in texts)
+        {
+            Destroy(text.gameObject);
         }
     }
 
@@ -185,7 +291,7 @@ public class ChummyBossManager : MonoBehaviour
 
         bossFightStarted = true;
         
-        while (BossAudio.pitch < 0.9f)
+        while (BossAudio.pitch < 0.8f)
         {
             BossAudio.pitch += 0.01f;
 

@@ -40,6 +40,11 @@ public class ChummySpawnerButton : PopupSpawnerButton, IPointerDownHandler, IPoi
         {
             PopupPrefab = AlertPopup;
         }
+        else
+        {
+            // make the icon draggable only once chummy has been spawned
+            GetComponent<UIDraggable>().enabled = true;
+        }
 
         base.OnSpawnerButtonSelected();
     }
